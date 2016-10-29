@@ -3,7 +3,6 @@
 //  semctl
 //
 //  Created by Théo MAILLART on 23/10/2016.
-//  Copyright © 2016 Théo MAILLART. All rights reserved.
 //
 
 #ifndef semaphore_h
@@ -16,15 +15,18 @@
 #include <unistd.h>
 #include <sys/shm.h>
 #include <stdlib.h>
+#include <fcntl.h>
+
 #define PROT 0666
 
 static int semid=-2;
+static int n_sem=0;
 
-int init_semaphore(const char* name,int n_sem);
+int init_semaphore(const char* name,int n_sems);
 
-void get_semid(const char* name,int n_sem);
+void get_semid(const char* name);
 
-int detruire_semaphore(int n_sem);
+int detruire_semaphore();
 
 int val_sem(int sem, int val);
 

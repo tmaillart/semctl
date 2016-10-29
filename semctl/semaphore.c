@@ -3,20 +3,26 @@
 //  semctl
 //
 //  Created by Théo MAILLART on 23/10/2016.
-//  Copyright © 2016 Théo MAILLART. All rights reserved.
 //
 
 #include "semaphore.h"
 
-void get_semid(const char* name,int n_sem){
+void get_semid(const char* name){
+    int fd=open(name,O_RDONLY);
+    if (fd<0) {
+        printf("Semaphore doesn't exist\n");
+        exit(-1);
+    }
+    read(fd, &n_sem, sizeof(int));
     semid=semget(ftok(name, 'a'), n_sem, PROT);
+    close(fd);
 }
 
-int init_semaphore(const char* name,int n_sem){
-    return semid=semget(ftok(name, 'a'),n_sem,IPC_CREAT|PROT|IPC_EXCL);//IPC_EXCL
+int init_semaphore(const char* name,int n_sems){
+    return semid=semget(ftok(name, 'a'),n_sems,IPC_CREAT|PROT|IPC_EXCL);//IPC_EXCL
 }
 
-int detruire_semaphore(int n_sem){
+int detruire_semaphore(){
     if (semid == -2 || semid == -1) {
         fprintf(stderr, "Le groupe de sémaphores ne peut être détruit, il n'a jamais été créé.\n");
         return -1;
