@@ -10,7 +10,13 @@
 #include <string.h>
 #include "semaphore.h"
 
-int main(int argc, const char * argv[]) {//index begin 0 but have to specify n_sem ? store n_sem in file
+int main(int argc, const char * argv[]) {
+    //Get information about semaphore behaviour after reboot
+    
+    if (argc<2){
+        printf("You to specify a sub command\n");
+        return -1;
+    }
     
     int i,val,fd;
     char file[256]="/usr/local/share/semctl/";
@@ -61,7 +67,7 @@ int main(int argc, const char * argv[]) {//index begin 0 but have to specify n_s
             return -1;
         strcat(file, argv[2]);
         get_semid(file);
-        detruire_semaphore();
+        remove_semaphore();
         remove(file);
     }else if (strcmp(argv[1], "P")==0) {//semctl P <name> -<nth>
         i=0;

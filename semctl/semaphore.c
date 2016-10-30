@@ -22,9 +22,9 @@ int init_semaphore(const char* name,int n_sems){
     return semid=semget(ftok(name, 'a'),n_sems,IPC_CREAT|PROT|IPC_EXCL);//IPC_EXCL
 }
 
-int detruire_semaphore(){
+int remove_semaphore(){
     if (semid == -2 || semid == -1) {
-        fprintf(stderr, "Le groupe de sémaphores ne peut être détruit, il n'a jamais été créé.\n");
+        fprintf(stderr, "Semaphore internal error\n");
         return -1;
     }
     return semctl(semid,n_sem,IPC_RMID,0);
@@ -32,7 +32,7 @@ int detruire_semaphore(){
 
 int val_sem(int sem, int val){
     if (semid == -2 || semid == -1) {
-        fprintf(stderr, "Le groupe de sémaphores ne peut être détruit, il n'a jamais été créé.\n");
+        fprintf(stderr, "Semaphore internal error\n");
         return -1;
     }
     if (sem<0) return -2;
@@ -44,7 +44,7 @@ int val_sem(int sem, int val){
 
 int P(int sem){
     if (semid == -2 || semid == -1) {
-        fprintf(stderr, "Le groupe de sémaphores ne peut être détruit, il n'a jamais été créé.\n");
+        fprintf(stderr, "Semaphore internal error\n");
         return -1;
     }
     if (sem<0) return -2;
@@ -57,7 +57,7 @@ int P(int sem){
 
 int V(int sem){
     if (semid == -2 || semid == -1) {
-        fprintf(stderr, "Le groupe de sémaphores ne peut être détruit, il n'a jamais été créé.\n");
+        fprintf(stderr, "Semaphore internal error\n");
         return -1;
     }
     if (sem<0) return -2;

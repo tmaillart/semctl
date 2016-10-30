@@ -26,7 +26,7 @@ int init_semaphore(const char* name,int n_sems);
 
 void get_semid(const char* name);
 
-int detruire_semaphore();
+int remove_semaphore();
 
 int val_sem(int sem, int val);
 
