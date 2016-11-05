@@ -73,9 +73,7 @@ int main(int argc, const char * argv[]) {
         printf("Permission denied\n");
         return -1;
     }*/
-    garbage_collector();
-    return 0;
-    
+    garbage_collector();    
     
     if (strcmp(argv[1], "create")==0) {//semctl create <name> -<n>
         i=1;
