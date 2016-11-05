@@ -8,10 +8,55 @@
 #include <stdio.h>
 #include <sys/stat.h>
 #include <string.h>
+#include <sys/sysctl.h>
+#include <dirent.h>
 #include "semaphore.h"
+#define PATH "/usr/local/share/semctl"
+
+void garbage_collector(){
+
+    int value[2];
+    char fullpath[512];
+    struct timeval uptime;
+    size_t len;
+    uint64_t bootime;
+    DIR *d;
+    struct dirent *dir;
+    struct stat st;
+
+    value[0]=CTL_KERN;
+    value[1]=KERN_BOOTTIME;
+    
+    len=sizeof(uptime);
+    sysctl(value, 2, &uptime, &len, NULL, 0);
+    bootime = (uptime.tv_sec * (uint64_t)1000) + (uptime.tv_usec / 1000);
+
+    
+    d = opendir(PATH);
+    if (d){
+        while ((dir = readdir(d)) != NULL){
+            if (dir->d_type==DT_REG){
+                sprintf(fullpath,"%s/", PATH);
+                strcat(fullpath, dir->d_name);
+                
+                if (stat(fullpath, &st))
+                    perror(fullpath);
+                else if (bootime>(st.st_birthtimespec.tv_sec*1000))
+                    remove(fullpath);
+                
+            }
+        }
+        closedir(d);
+    }
+    
+
+}
+
+
 
 int main(int argc, const char * argv[]) {
     //Get information about semaphore behaviour after reboot
+    
     
     if (argc<2){
         printf("You to specify a sub command\n");
@@ -19,7 +64,7 @@ int main(int argc, const char * argv[]) {
     }
     
     int i,val,fd;
-    char file[256]="/usr/local/share/semctl/";
+    char file[256]=PATH;
     extern int errno;
     
     i=mkdir(file,0777);
@@ -28,6 +73,8 @@ int main(int argc, const char * argv[]) {
         printf("Permission denied\n");
         return -1;
     }*/
+    garbage_collector();
+    return 0;
     
     
     if (strcmp(argv[1], "create")==0) {//semctl create <name> -<n>
