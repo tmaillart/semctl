@@ -11,7 +11,7 @@
 #include <sys/sysctl.h>
 #include <dirent.h>
 #include "semaphore.h"
-#define PATH "/usr/local/share/semctl"
+#define PATH "/usr/local/share/semctl/"
 
 void garbage_collector(){
 
@@ -36,7 +36,7 @@ void garbage_collector(){
     if (d){
         while ((dir = readdir(d)) != NULL){
             if (dir->d_type==DT_REG){
-                sprintf(fullpath,"%s/", PATH);
+                sprintf(fullpath,"%s", PATH);
                 strcat(fullpath, dir->d_name);
                 
                 if (stat(fullpath, &st))
@@ -68,12 +68,12 @@ int main(int argc, const char * argv[]) {
     extern int errno;
     
     i=mkdir(file,0777);
-    /*
     if (errno==13) {
         printf("Permission denied\n");
         return -1;
-    }*/
-    garbage_collector();    
+    }
+    
+    garbage_collector();
     
     if (strcmp(argv[1], "create")==0) {//semctl create <name> -<n>
         i=1;
