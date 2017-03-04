@@ -84,7 +84,7 @@ int main(int argc, const char * argv[]) {
             return -1;
         } else {
             // file doesn't exist
-            fd=open(file,O_CREAT,0666);
+            fd=open(file,O_CREAT|O_WRONLY,0666);
             if (fd<0)
                 return -1;
 
