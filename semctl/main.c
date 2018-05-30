@@ -4,7 +4,10 @@
 #include <sys/sysctl.h>
 #include <dirent.h>
 #include "semaphore.h"
+#include <errno.h>
+
 #define PATH "/tmp/semctl/"
+
 /*
 void garbage_collector(){
 

@@ -19,6 +19,14 @@
 
 #define PROT 0666
 
+union semun {
+    int              val;    /* Valeur pour SETVAL */
+    struct semid_ds *buf;    /* Tampon pour IPC_STAT, IPC_SET */
+    unsigned short  *array;  /* Tableau pour GETALL, SETALL */
+    struct seminfo  *__buf;  /* Tampon pour IPC_INFO
+                                (spécifique à Linux) */
+};
+
 static int semid=-2;
 static int n_sem=0;
 
